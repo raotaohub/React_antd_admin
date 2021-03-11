@@ -1,28 +1,26 @@
 //------------------- 引入库
 import React, {ReactElement,} from "react";
 //-------------------
-import {Layout, Menu} from 'antd';
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
+import {Layout} from 'antd';
 
-} from '@ant-design/icons';
 
 //------------------- 引入样式
 import './index.less'
 //------------------- antd组件解构
-const {Header} = Layout;
-const {SubMenu,} = Menu
+const {Content} = Layout;
 
-const LayoutHeader = (props: any): ReactElement => {
+function LayoutContent(): ReactElement {
 
-  const {toggle, collapsed} = props
   return (
-      <Header className="site-layout-background" style={{padding: 0}}>
-        {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-          className: 'trigger',
-          onClick: toggle,
-        })}
-      </Header>
+      <Content
+          className="site-layout-background"
+          style={{
+            margin: '24px 16px',
+            padding: 24,
+            minHeight: 280,
+          }}>
+      </Content>
   )
 }
+
+export default React.memo(LayoutContent)

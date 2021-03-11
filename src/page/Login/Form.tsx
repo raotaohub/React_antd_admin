@@ -1,122 +1,133 @@
-/*
- * @Author: raotaohub
- * @Date: 2021-02-20 15:45:36
- * @LastEditTime: 2021-02-20 20:03:51
- * @LastEditors: raotaohub
- * @FilePath: \react_admin_client_ts\src\page\login\Form.tsx
- * @Description: Edit......
- */
-// import React from "react";
-// import { Form, Input, Button, Checkbox } from "antd";
+import React, {useState, useEffect} from 'react'
+import {Form, Input, Button, Checkbox, Space, message} from "antd";
+import {UserOutlined, LockOutlined} from "@ant-design/icons";
+import NProgress from "nprogress";
+import {setUser} from "../../utils/storage";
 
-// const layout = {
-//   labelCol: { span: 8 },
-//   wrapperCol: { span: 16 },
-// };
-// const tailLayout = {
-//   wrapperCol: { offset: 8, span: 16 },
-// };
+/** 提示消息 **/
+const success = () => {
+  message.success('登录成功');
+};
 
-// const Demo = () => {
-//   const onFinish = (values: any) => {
-//     console.log("Success:", values);
-//   };
+const error = () => {
+  message.error('网络异常');
+};
 
-//   const onFinishFailed = (errorInfo: any) => {
-//     console.log("Failed:", errorInfo);
-//   };
+const warning = () => {
+  message.warning('请输入正确的用户名或密码');
+};
 
-//   return (
-//     <Form
-//       {...layout}
-//       name="basic"
-//       initialValues={{ remember: true }}
-//       onFinish={onFinish}
-//       onFinishFailed={onFinishFailed}
-//     >
-//       <Form.Item
-//         label="用户名"
-//         name="username"
-//         rules={[{ required: true, message: "Please input your username!" }]}
-//       >
-//         <Input />
-//       </Form.Item>
 
-//       <Form.Item
-//         label="密码"
-//         name="password"
-//         rules={[{ required: true, message: "Please input your password!" }]}
-//       >
-//         <Input.Password />
-//       </Form.Item>
+const NormalLoginForm = (props: any) => {
+  const {history} = props
 
-//       <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-//         <Checkbox>记住账号</Checkbox>
-//       </Form.Item>
-
-//       <Form.Item {...tailLayout}>
-//         <Button type="primary" htmlType="submit">
-//           登录
-//         </Button>
-//       </Form.Item>
-//     </Form>
-//   );
-// };
-
-// export default Demo;
-
-import { Form, Input, Button, Checkbox } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
-
-const NormalLoginForm = () => {
   const onFinish = (values: any) => {
-    console.log("Received values of form: ", values);
+    NProgress.start()
+    const loginState = checkUser(values)
+    switch (loginState) {
+      case 1:
+        success();
+        NProgress.done();
+        /**
+         * 在登录的时候，把用户信息储存到本地
+         * **/
+        setUser(values.username, JSON.parse(values))
+        props.history.replace('/Admin')
+        break
+      case -1:
+        warning()
+        NProgress.done();
+        break
+      case 0:
+        error()
+        NProgress.done();
+        break
+    }
+    NProgress.remove()
   };
+
   const onFinishFailed = () => {
-    console.log("222");
+    props.history.replace('/')
   };
+  /** 在 useEffect 中验证是否已登录 **/
+
+  /** 简单验证逻辑 **/
+  const checkUser = (useValue: any) => {
+    const {username, password} = useValue
+
+    if (username === 'admin' && password === 'admin') {
+      return 1
+    }
+    if (username !== 'admin' || password !== 'admin') {
+      return -1
+    }
+    if (username === '' || password === '') {
+      return 0
+    }
+  }
+
+  const github = () => {
+    window.location.href = 'https://github.com/raotaohub/React_antd_admin'
+  }
 
   return (
-    <Form
-      name="normal_login"
-      className="login-form"
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-    >
-      <Form.Item
-        name="username"
-        rules={[{ required: true, message: "Please input your Username!" }]}
+      <Form
+          name="normal_login"
+          className="login-form"
+          initialValues={{remember: true}}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
       >
-        <Input
-          prefix={<UserOutlined className="site-form-item-icon" />}
-          placeholder="用户名"
-        />
-      </Form.Item>
 
-      <Form.Item
-        name="password"
-        rules={[{ required: true, message: "Please input your Password!" }]}
-      >
-        <Input
-          prefix={<LockOutlined className="site-form-item-icon" />}
-          type="password"
-          placeholder="密码"
-        />
-      </Form.Item>
-
-      <Form.Item>
-        <Form.Item name="remember" valuePropName="checked" noStyle>
-          <Checkbox>记住账号</Checkbox>
+        <Form.Item>
+          <span style={{fontSize: "24px"}}>React admin</span>
         </Form.Item>
-      </Form.Item>
 
-      <Form.Item>
-        <Button type="primary" htmlType="submit" className="login-form-button">
-          登录
-        </Button>
-      </Form.Item>
-    </Form>
+        <Form.Item
+            name="username"
+            rules={[{required: true, whitespace: true, message: "Please input your Username!"},
+              {min: 5, message: "用户名至少5位!"},
+              {max: 5, message: "密码最多5位!"}
+            ]}
+        >
+          <Input
+              prefix={<UserOutlined className="site-form-item-icon"/>}
+              placeholder="用户名:admin"
+          />
+        </Form.Item>
+
+        <Form.Item
+            name="password"
+            rules={[
+              {required: true, whitespace: true, message: "Please input your Password!"},
+              {min: 5, message: "密码至少5位!"},
+              {max: 5, message: "密码最多5位!"}
+            ]}
+        >
+          <Input
+              prefix={<LockOutlined className="site-form-item-icon"/>}
+              type="password"
+              placeholder="密码:admin"
+          />
+        </Form.Item>
+
+        <Form.Item>
+          <Form.Item name="remember" valuePropName="checked" noStyle>
+            <Checkbox>记住账号</Checkbox>
+          </Form.Item>
+        </Form.Item>
+
+        <Form.Item>
+          <Button type="primary" htmlType="submit" className="login-form-button">
+            登录
+          </Button>
+        </Form.Item>
+
+        <Form.Item>
+          <span onClick={github}>或 现在就去注册疙瘩！</span>
+          <a href={'https://github.com/raotaohub/React_antd_admin'} target={'_blank'}>了解疙瘩</a>
+        </Form.Item>
+      </Form>
   );
 };
 

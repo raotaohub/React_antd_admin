@@ -8,22 +8,24 @@
  */
 import React from "react";
 import {Redirect} from "react-router-dom";
+// import adminRoutes from "./adminRoutes/index"
 
 const Login = React.lazy(() => import("../page/Login/login"))
 const Admin = React.lazy(() => import("../page/Admin/admin"))
 const NotFound = React.lazy(() => import('../page/NotFound/notFound'))
 const ErrorPage = React.lazy(() => import('../page/ErrorPage/errorPage'))
 
-const routes = [
 
+const routes = [
   {
     path: "/login",
+    exact: true,
     component: Login,
   },
   {
     path: "/",
     component: Admin,
-    routes:[]
+    // routes: adminRoutes
   },
   {
     path: '/404',
