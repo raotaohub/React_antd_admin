@@ -1,17 +1,17 @@
 /*
  * @Author: raotaohub
  * @Date: 2021-02-19 17:00:44
- * @LastEditTime: 2021-02-20 00:23:01
+ * @LastEditTime: 2021-04-27 22:37:17
  * @LastEditors: raotaohub
  * @FilePath: \react_admin_client_ts\src\App.tsx
  * @Description: App外壳组件
  */
-import React, {Suspense} from "react";
-import {BrowserRouter} from "react-router-dom";
-import {Provider} from "react-redux";
-import {renderRoutes} from "react-router-config";
-import routes from "./routes/index";
-import store from "./store/index";
+import React, { Suspense } from 'react';
+import { BrowserRouter, Switch } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { renderRoutes } from 'react-router-config';
+import routes from './routes/index';
+import store from './store/index';
 
 /***
  * react中的代码分割实现
@@ -22,13 +22,13 @@ import store from "./store/index";
  * */
 function App() {
   return (
-      <Suspense fallback={<div>Login...</div>}>
-        <Provider store={store}>
-          <BrowserRouter>
-            {renderRoutes(routes)}
-          </BrowserRouter>
-        </Provider>
-      </Suspense>
+    <Suspense fallback={<div>Login...</div>}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Switch> {renderRoutes(routes)} </Switch>
+        </BrowserRouter>
+      </Provider>
+    </Suspense>
   );
 }
 

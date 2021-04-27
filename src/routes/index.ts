@@ -1,40 +1,41 @@
 /*
  * @Author: raotaohub
  * @Date: 2021-02-19 23:30:17
- * @LastEditTime: 2021-02-20 00:36:34
+ * @LastEditTime: 2021-04-27 22:39:09
  * @LastEditors: raotaohub
- * @FilePath: \react_admin_client_ts\src\routes\index.js
+ * @FilePath: \react_admin_client_ts\src\routes\index.ts
  * @Description: Edit......
  */
-import React from "react";
-import {Redirect} from "react-router-dom";
-// import adminRoutes from "./adminRoutes/index"
+import React from 'react';
+import { Redirect } from 'react-router-dom';
+import adminRoutes from './adminRoutes/index';
 
-const Login = React.lazy(() => import("../page/Login/login"))
-const Admin = React.lazy(() => import("../page/Admin/admin"))
-const NotFound = React.lazy(() => import('../page/NotFound/notFound'))
-const ErrorPage = React.lazy(() => import('../page/ErrorPage/errorPage'))
-
+const Login = React.lazy(() => import('../page/Login/login'));
+const Admin = React.lazy(() => import('../page/Admin/admin'));
+const NotFound = React.lazy(() => import('../page/NotFound/notFound'));
+const ErrorPage = React.lazy(() => import('../page/ErrorPage/errorPage'));
 
 const routes = [
   {
-    path: "/login",
+    path: '/login',
     exact: true,
     component: Login,
   },
   {
-    path: "/",
+    path: '/',
     component: Admin,
-    // routes: adminRoutes
+    routes: adminRoutes,
   },
   {
     path: '/404',
-    component: NotFound
+    exact: true,
+    component: NotFound,
   },
   {
     path: '/500',
-    component: ErrorPage
-  }
+    exact: true,
+    component: ErrorPage,
+  },
 ];
 
 export default routes;
