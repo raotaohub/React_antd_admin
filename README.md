@@ -1,46 +1,98 @@
-# Getting Started with Create React App
+<!--
+ * @Author: raotaohub
+ * @Date: 2021-02-19 17:00:44
+ * @LastEditTime: 2021-02-19 19:30:46
+ * @LastEditors: raotaohub
+ * @FilePath: \react_admin_client_ts\README.md
+ * @Description: Edit......
+-->
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 提交规范和配置流程说明
 
-## Available Scripts
+`npm install husky --save-dev`
 
-In the project directory, you can run:
+`npm install lint-staged -D -S `
 
-### `yarn start`
+`npm i commitizen cz-conventional-changelog --save-dev`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```js
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  },
+  "lint-staged": {
+    "src/*_/_.{js,vue}": [
+      "npm run lint",
+      "git add"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+    "scripts": {
+    ...
+    // 新增一条命令
+    "commit": "git-cz"
+  },
+```
 
-### `yarn test`
+## 提交规范使用篇
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+在需要提交的时候运行 `npm run commit`
 
-### `yarn build`
+```html
+feat：新功能
+fix：修补 bug
+docs：修改文档，比如 README, CHANGELOG, CONTRIBUTE 等等
+style： 不改变代码逻辑 (仅仅修改了空格、格式缩进、逗号等等)
+refactor：重构（既不修复错误也不添加功能）
+perf: 优化相关，比如提升性能、体验
+test：增加测试，包括单元测试、集成测试等
+build: 构建系统或外部依赖项的更改
+ci：自动化流程配置或脚本修改
+chore: 非 src 和 test 的修改
+revert: 恢复先前的提交
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```html
+? Select the **type** of change that you're committing:
+(type) 选择提交更改的类型 （必须）
+? What is the **scope** of this change (e.g. component or file name)? (press enter to skip)
+(scope) 此次更改的范围是什么（组件或者文件名）
+? Write a **short**, imperative tense description of the change:
+(subject) 写一个简短的，命令式的变化描述 （必须）
+? Provide a **longer description** of the change: (press enter to skip)
+(Body) 提供更改的长描述
+? Are there any **breaking changes**?
+(Footer) 有没有突破性的变化
+? Does this change affect any open **issues**? (y/N)
+(Footer) 此次更改是否有要关闭 issues
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+关于release:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+// 发布首个版本
+npm run release -- --first-release
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+// 发布预发布版本
+// 例如：v1.0.0 -> v1.0.0-0
+npm run release -- --prerelease
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+// 发布与首个 alpha 版本
+// 例如：v1.0.0 -> 1.0.1-alpha.0
+npm run release -- --prerelease alpha
 
-## Learn More
+// 发布 major、minor、patch 版本
+npm run release -- --release-as minor
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 权限篇
+    
