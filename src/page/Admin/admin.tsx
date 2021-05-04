@@ -1,56 +1,73 @@
 /*
  * @Author: raotaohub
  * @Date: 2021-02-19 20:44:47
- * @LastEditTime: 2021-04-27 23:33:48
+ * @LastEditTime: 2021-05-04 21:58:55
  * @LastEditors: raotaohub
  * @FilePath: \react_admin_client_ts\src\page\Admin\admin.tsx
  * @Description: Edit......
  */
 //------------------- 引入库
-import React, { ReactElement, useState } from 'react';
-import { Switch, useHistory } from 'react-router-dom';
-import { renderRoutes } from 'react-router-config';
+import React, { ReactElement, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
+//------------------- 引入状态
+import { observer } from 'mobx-react'
+import stepStore from '../../store/mobx/stepStore'
+import store from '../../store/mobx/testStore'
+
 //------------------- 引入antd
-import { Layout, Menu } from 'antd';
+import { message } from 'antd'
 
 //------------------- 引入样式
-import './admin.less';
+import './admin.less'
 
-//------------------- 引入公共组件
-import LayoutHeader from '../../components/LayoutHeader';
-import LayoutContent from '../../components/LayoutContent';
-import LayoutSideBar from '../../components/LayoutSideBar';
+import { getUser, RemoveUser } from '../../utils/storage'
 
-function Admin(props: any): ReactElement {
-  const [collapsed, setCollapsed] = React.useState(false);
-  const { route } = props;
-  let history = useHistory();
-  const toggle = () => {
-    setCollapsed(!collapsed);
-  };
-  const refresh = () => {
-    history.replace('/admin');
-  };
+const Admin = (props: any): ReactElement => {
+  const { route } = props
+  console.log(route)
+
+  let history = useHistory()
+
+  useEffect(() => {
+    let current = true
+    console.warn(props)
+
+    message.success('欢迎进入疙瘩后台')
+
+    if (current && !getUser('admin')) history.replace('/login')
+
+    return () => {
+      current = false
+      // RemoveUser('admin')
+    }
+  }, [history, props])
+
+  const setCount = () => {
+    return () => {
+      stepStore.setCurrent(stepStore.current + 1)
+    }
+  }
+
   return (
-    <div id="admin">
-      <Layout style={{ height: '100%', width: '100%' }}>
-        <LayoutSideBar
-          toggle={toggle}
-          collapsed={collapsed}
-          refresh={refresh}
-        />
-        <Layout className="site-layout">
-          <LayoutHeader toggle={toggle} collapsed={collapsed}>
-            ♥♥♥疙瘩的后台管理页~
-          </LayoutHeader>
-
-          <LayoutContent style={{}}>
-            <Switch>{renderRoutes(route.routes)}</Switch>
-          </LayoutContent>
-        </Layout>
-      </Layout>
-    </div>
-  );
+    <>
+      <div id='admin'>
+        欢迎来到疙瘩后台~admin
+        <div> {stepStore.current}</div>
+        <button onClick={setCount()}>setCount</button>
+        <div>
+          <h1>About</h1>
+          <div>count from main: {store.amount}</div>
+          <div>price: {store.price}</div>
+          <button type='button' onClick={() => store.increment()}>
+            add +1
+          </button>
+          <button type='button' onClick={() => store.asyncAction()}>
+            异步按钮
+          </button>
+        </div>
+      </div>
+    </>
+  )
 }
-
-export default Admin;
+// *监听被观察的数据 !一定要执行这步
+export default observer(Admin)

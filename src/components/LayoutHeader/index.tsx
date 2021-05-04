@@ -2,14 +2,13 @@
 import React, { ReactElement } from 'react';
 // import {connect} from "react-redux";
 //-------------------
-import { Layout, Menu } from 'antd';
+import { Layout } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 
 //------------------- 引入样式
 import './index.less';
 //------------------- antd组件解构
 const { Header } = Layout;
-const { SubMenu } = Menu;
 
 function LayoutHeader(props: any): ReactElement {
   const { toggle, collapsed } = props;

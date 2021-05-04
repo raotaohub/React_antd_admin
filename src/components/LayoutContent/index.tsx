@@ -9,6 +9,8 @@ import './index.less';
 const { Content } = Layout;
 
 function LayoutContent(props: any): ReactElement {
+  console.log(props);
+  
   return (
     <Content
       className="site-layout-background"

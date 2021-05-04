@@ -1,10 +1,10 @@
 import React from 'react'
-
+import './dashboard.less'
 const Dashboard = () => {
   return (
-      <div>
-        <h1>Content里面的Dashboard页面</h1>
-      </div>
+    <div id='dashboard'>
+      <h1>Content里面的Dashboard111111111111仪表盘111页面</h1>
+    </div>
   )
 }
 

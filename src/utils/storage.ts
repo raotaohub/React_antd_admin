@@ -5,7 +5,7 @@
 export const getUser = (userName: string) => {
   const data: string | null = localStorage.getItem(userName)
   try {
-    return JSON.parse(typeof data === "string" ? data : '')
+    return JSON.parse(typeof data === 'string' ? data : '')
   } catch (e) {
     return data
   }
@@ -21,4 +21,3 @@ export const setUser = (userName: string, userVal: any) => {
 export const RemoveUser = (userName: string) => {
   window.localStorage.removeItem(userName)
 }
-

@@ -1,26 +1,25 @@
-import React from 'react';
+import React from 'react'
 
-const adminRoutes = [
+const adminMenu = [
   {
     name: '仪表盘',
-    path: '/admin/dashboard',
-    key: 0,
-    exact: false,
+    path: '/dashboard',
+    key: 1,
+    exact: true,
     icon: '',
-    component: React.lazy(() => import('../../page/Admin/Dashboard/dashboard')),
     meta: {
       needLoginAuth: true,
       rolesAuth: ['user', 'admin'],
     },
-    children: [
+    routes: [
       {
         name: '用户数据',
-        path: '/admin/dashboard/userData',
-        key: 0,
+        path: '/dashboard/userData',
+        key: 11,
         icon: '',
-        exact: false,
+        exact: true,
         component: React.lazy(
-          () => import('../../page/Admin/UserSetting/userSetting')
+          () => import('../../page/Admin/Dashboard/UserData/UserData')
         ),
         meta: {
           needLoginAuth: true,
@@ -29,12 +28,12 @@ const adminRoutes = [
       },
       {
         name: '付费转化率',
-        path: '/admin/dashboard/userRate',
-        key: 1,
+        path: '/dashboard/userRate',
+        key: 12,
         icon: '',
-        exact: false,
+        exact: true,
         component: React.lazy(
-          () => import('../../page/Admin/AuthSetting/authSetting')
+          () => import('../../page/Admin/Dashboard/UserRate/UserRate')
         ),
         meta: {
           needLoginAuth: true,
@@ -45,24 +44,27 @@ const adminRoutes = [
   },
   {
     name: '系统设置',
-    path: '/',
-    key: 1,
+    path: '/systemSettings',
+    key: 2,
     component: React.lazy(
       () => import('../../page/Admin/UserSetting/userSetting')
     ),
     icon: '',
-    exact: false,
+    exact: true,
+    // strict:true,
     meta: {
       needLoginAuth: true,
       rolesAuth: ['user', 'admin'],
     },
-    children: [
+    routes: [
       {
         name: '用户设置',
-        path: '/admin/user-setting',
-        key: 0,
+        path: '/systemSettings/user-setting',
+        key: 21,
         icon: '',
-        exact: false,
+        exact: true,
+        // strict:true,
+
         component: React.lazy(
           () => import('../../page/Admin/UserSetting/userSetting')
         ),
@@ -73,10 +75,11 @@ const adminRoutes = [
       },
       {
         name: '权限设置',
-        path: '/admin/auth-setting',
-        key: 1,
+        path: '/systemSettings/auth-setting',
+        key: 22,
         icon: '',
-        exact: false,
+        exact: true,
+        // strict:true,
         component: React.lazy(
           () => import('../../page/Admin/AuthSetting/authSetting')
         ),
@@ -89,22 +92,22 @@ const adminRoutes = [
   },
   {
     name: '其他',
-    path: '/admin/other',
+    path: '/other',
     icon: '',
-    exact: false,
-    key: 2,
+    exact: true,
+    key: 3,
     component: React.lazy(() => import('../../page/Admin/Other/other')),
     meta: {
       needLoginAuth: true,
       rolesAuth: ['user', 'admin'],
     },
-    children: [
+    routes: [
       {
         name: '天气',
-        path: '/admin/other/theWeather',
-        key: 0,
+        path: '/other/theWeather',
+        key: 31,
         icon: '',
-        exact: false,
+        exact: true,
         component: React.lazy(
           () => import('../../page/Admin/UserSetting/userSetting')
         ),
@@ -115,10 +118,10 @@ const adminRoutes = [
       },
       {
         name: '群发',
-        path: '/admin/other/group',
-        key: 1,
+        path: '/other/group',
+        key: 32,
         icon: '',
-        exact: false,
+        exact: true,
         component: React.lazy(
           () => import('../../page/Admin/AuthSetting/authSetting')
         ),
@@ -129,6 +132,6 @@ const adminRoutes = [
       },
     ],
   },
-];
+]
 
-export default adminRoutes;
+export default adminMenu
